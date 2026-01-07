@@ -1,0 +1,71 @@
+.loginCard {
+  border-radius: 20px;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.18);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+}
+
+.title {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin-top: 0.35rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.modeSwitch {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  background: rgba(15, 23, 42, 0.03);
+  padding: 0.4rem;
+  border-radius: 999px;
+}
+
+.modeButton {
+  --border-radius: 999px;
+  --padding-start: 1.25rem;
+  --padding-end: 1.25rem;
+  --background: transparent;
+  --color: #0f172a;
+  --border-color: transparent;
+  font-weight: 600;
+  text-transform: none;
+}
+
+.modeButtonActive {
+  --border-radius: 999px;
+  --padding-start: 1.25rem;
+  --padding-end: 1.25rem;
+  --background: #2563eb;
+  --background-activated: #1d4ed8;
+  --background-hover: #1d4ed8;
+  --color: #ffffff;
+  font-weight: 700;
+  text-transform: none;
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4);
+}
+
+.formWrapper {
+  margin-top: 1.5rem;
+}
+
+@media (max-width: 480px) {
+  .loginCard {
+    border-radius: 16px;
+  }
+
+  .modeButton,
+  .modeButtonActive {
+    --padding-start: 0.8rem;
+    --padding-end: 0.8rem;
+    font-size: 0.8rem;
+  }
+}
+
+
