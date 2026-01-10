@@ -1,0 +1,105 @@
+.container {
+  width: 100%;
+  margin: 16px 0;
+}
+
+/* В SMSInput.module.css заменить .input */
+.input {
+  flex: 1; /* Растягивается пропорционально */
+  min-width: 1em;
+  max-width: 2em;
+  height: 48px;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 8px;
+  color: #e5e7eb;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  outline: none;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.inputsContainer {
+  display: flex;
+  justify-content: space-between; /* Вместо center с gap */
+  align-items: center;
+  width: 100%;
+}
+
+.inputWrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 4px;
+}
+.input:focus {
+  border-color: #3b82f6;
+  border-width: 2px;
+  background: rgba(30, 41, 59, 0.8);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.input:disabled {
+  background: rgba(30, 41, 59, 0.3);
+  color: rgba(229, 231, 235, 0.5);
+  border-color: rgba(148, 163, 184, 0.1);
+  cursor: not-allowed;
+}
+
+.separator {
+  width: 10px;
+  height: 2px;
+  background: rgba(148, 163, 184, 0.3);
+  margin: 0 4px;
+}
+
+/* Анимация для фокуса */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.input:focus {
+  animation: pulse 1.5s infinite;
+}
+
+/* Для мобильных устройств */
+@media (max-width: 480px) {
+  .inputsContainer {
+    gap: 12px;
+  }
+  
+  .input {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+  
+  .separator {
+    width: 8px;
+  }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 360px) {
+  .inputsContainer {
+    gap: 10px;
+  }
+  
+  .input {
+    width: 46px;
+    height: 46px;
+    font-size: 18px;
+  }
+  
+  .separator {
+    width: 6px;
+  }
+}

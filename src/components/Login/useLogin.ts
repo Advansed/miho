@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { post, ApiResponse } from '../api';
-import { useLoginStore } from './LoginStore';
+import { useLoginStore, useToken } from './LoginStore';
+import { useToast } from '../Toast';
 
 export type LoginMode = 'authorization' | 'registration' | 'restore';
 
@@ -8,6 +9,7 @@ export interface LoginState {
   mode: LoginMode;
   phone: string;
   password: string;
+  confirmPassword: string;
   pincode: string;
   name: string;
   email: string;
@@ -20,17 +22,21 @@ export interface LoginPayload {
 }
 
 export interface RegisterPayload {
+  token?: string;
   phone: string;
-  pincode: string;
   password: string;
-  name: string;
-  email: string;
+  name?: string;
+  email?: string;
 }
 
 export interface RestorePayload {
   phone: string;
   pincode: string;
   password: string;
+}
+
+export interface VerifyResponse {
+  token: string;
 }
 
 interface AuthResponse {
@@ -42,25 +48,43 @@ interface AuthResponse {
   token: string;
 }
 
+export interface LoginState {
+  mode: LoginMode;
+  phone: string;
+  password: string;
+  confirmPassword: string;
+  pincode: string;
+  name: string;
+  email: string;
+  registrationStep: 'phone' | 'code' | 'profile';
+}
+
+
 export const useLogin = (initialMode: LoginMode = 'authorization') => {
+  const toast = useToast();
   const {
     setPhone,
     setName,
     setEmail: setStoreEmail,
     setRole,
     setPincode,
-    setToken,
     setMode: setStoreMode,
+    loading,
+    setLoading,
   } = useLoginStore();
 
+  const { token, setToken } = useToken();
+
+  // В начальное состояние:
   const [state, setState] = useState<LoginState>({
     mode: initialMode,
     phone: '',
     password: '',
+    confirmPassword: '',
     pincode: '',
     name: '',
     email: '',
-    registrationStep: 'phone',
+    registrationStep: 'phone'
   });
 
   const setMode = (mode: LoginMode) =>
@@ -79,6 +103,12 @@ export const useLogin = (initialMode: LoginMode = 'authorization') => {
     setState((prev) => ({
       ...prev,
       password,
+    }));
+
+  const setConfirm = (confirmPassword: string) =>
+    setState((prev) => ({
+      ...prev,
+      confirmPassword,
     }));
 
   const setPincodeState = (pincode: string) =>
@@ -110,113 +140,186 @@ export const useLogin = (initialMode: LoginMode = 'authorization') => {
       mode: 'authorization',
       phone: '',
       password: '',
+      confirmPassword: '',
       pincode: '',
       name: '',
       email: '',
-      registrationStep: 'phone',
+      registrationStep: 'phone'
     });
 
   const login = async ({ phone, password }: LoginPayload) => {
-    const apiRes = await post<AuthResponse, LoginPayload>(
-      '/auth/login',
-      { phone, password },
-    );
+    setLoading(true);
+    try {
+      const apiRes = await post<AuthResponse, LoginPayload>(
+        '/node/login',
+        { phone, password },
+      );
 
-    if (!apiRes.success || !apiRes.data) {
-      throw new Error(apiRes.message || 'Ошибка авторизации');
+      console.log('apiRes', apiRes )
+
+      if (!apiRes.success || !apiRes.data) {
+        const errorMsg = apiRes.message || 'Ошибка авторизации';
+        toast.error(errorMsg);
+        // throw new Error(errorMsg);
+        return {success: false, message: errorMsg}
+      } 
+
+      const response = apiRes.data;
+
+      setPhone(response.phone);
+      setName(response.name);
+      setStoreEmail(response.email);
+      setRole(response.role);
+      setPincode(response.pincode ?? '');
+      setToken(response.token);
+      setStoreMode('login');
+
+      toast.success('Успешная авторизация!');
+      return response;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Неизвестная ошибка';
+      toast.error(message);
+      throw error;
+    } finally {
+      setLoading(false);
     }
-
-    const response = apiRes.data;
-
-    setPhone(response.phone);
-    setName(response.name);
-    setStoreEmail(response.email);
-    setRole(response.role);
-    setPincode(response.pincode ?? '');
-    setToken(response.token);
-    setStoreMode('login');
-
-    return response;
   };
 
-  const requestRegisterCode = async (phone: string) => {
-    const apiRes = await post<null, { phone: string }>(
-      '/auth/register/request-sms',
-      { phone },
-    );
-    if (!apiRes.success) {
-      throw new Error(apiRes.message || 'Не удалось отправить СМС');
+  const requestRegisterCode = async (phone: string, restore?: boolean) => {
+    setLoading(true);
+    try {
+      const apiRes = await post<null, { phone: string, restore?: boolean }>(
+        '/node/phone',
+        { phone, restore },
+      );
+
+      console.log("node/phone", apiRes)
+      if (!apiRes.success) {
+        const errorMsg = apiRes.message || 'Не удалось отправить СМС';
+        toast.error(errorMsg);
+        throw new Error(errorMsg);
+      }
+      setRegistrationStep('code');
+      setPhoneState(phone);
+      toast.success('Код отправлен на номер');
+      return apiRes;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Ошибка при отправке кода';
+      toast.error(message);
+      throw error;
+    } finally {
+      setLoading(false);
     }
-    setRegistrationStep('code');
-    setPhoneState(phone);
-    return apiRes;
   };
 
   const verifyRegisterCode = async ({ phone, pincode }: { phone: string; pincode: string }) => {
-    const apiRes = await post<null, { phone: string; pincode: string }>(
-      '/auth/register/verify-sms',
-      { phone, pincode },
-    );
-    if (!apiRes.success) {
-      throw new Error(apiRes.message || 'Неверный код из СМС');
+    setLoading(true);
+    try {
+      const apiRes = await post<VerifyResponse, { phone: string; pincode: string }>(
+        '/node/verify',
+        { phone, pincode },
+      );
+      if (!apiRes.success) {
+        const errorMsg = apiRes.message || 'Неверный код из СМС';
+        toast.error(errorMsg);
+        throw new Error(errorMsg);
+      }
+      setRegistrationStep('profile');
+      setPincodeState(pincode);
+      if(apiRes.data){
+        setToken( apiRes.data.token || '' )
+      }
+      toast.success('Код верифицирован!');
+      return apiRes;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Ошибка при проверке кода';
+      toast.error(message);
+      throw error;
+    } finally {
+      setLoading(false);
     }
-    setRegistrationStep('profile');
-    setPincodeState(pincode);
-    return apiRes;
   };
 
-  const register = async ({ phone, pincode, password, name, email }: RegisterPayload) => {
-    const apiRes = await post<AuthResponse, RegisterPayload>(
-      '/auth/register',
-      { phone, pincode, password, name, email },
-    );
+  const register = async ({ phone, password, name, email }: RegisterPayload) => {
+    setLoading(true);
+    try {
+      const apiRes = await post<AuthResponse, RegisterPayload>(
+        '/node/register',
+        { token, phone, password, name, email },
+      );
 
-    if (!apiRes.success || !apiRes.data) {
-      throw new Error(apiRes.message || 'Ошибка регистрации');
+      console.log('register', apiRes)
+
+      if (!apiRes.success || !apiRes.data) {
+        const errorMsg = apiRes.message || 'Ошибка регистрации';
+        toast.error(errorMsg);
+        throw new Error(errorMsg);
+      }
+
+      const response = apiRes.data;
+
+      setPhone(response.phone);
+      setName(response.name);
+      setStoreEmail(response.email);
+      setRole(response.role);
+      setPincode(response.pincode ?? '');
+      setToken(response.token);
+      setStoreMode('register');
+      setRegistrationStep('phone');
+
+      toast.success('Регистрация успешна!');
+      return response;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Ошибка при регистрации';
+      toast.error(message);
+      throw error;
+    } finally {
+      setLoading(false);
     }
-
-    const response = apiRes.data;
-
-    setPhone(response.phone);
-    setName(response.name);
-    setStoreEmail(response.email);
-    setRole(response.role);
-    setPincode(response.pincode ?? '');
-    setToken(response.token);
-    setStoreMode('register');
-    setRegistrationStep('phone');
-
-    return response;
   };
 
   const restore = async ({ phone, pincode, password }: RestorePayload) => {
-    const apiRes = await post<AuthResponse, RestorePayload>(
-      '/auth/restore',
-      { phone, pincode, password },
-    );
+    setLoading(true);
+    try {
+      const apiRes = await post<AuthResponse, RestorePayload>(
+        '/auth/restore',
+        { phone, pincode, password },
+      );
 
-    if (!apiRes.success || !apiRes.data) {
-      throw new Error(apiRes.message || 'Ошибка восстановления пароля');
+      if (!apiRes.success || !apiRes.data) {
+        const errorMsg = apiRes.message || 'Ошибка восстановления пароля';
+        toast.error(errorMsg);
+        throw new Error(errorMsg);
+      }
+
+      const response = apiRes.data;
+
+      setPhone(response.phone);
+      setName(response.name);
+      setStoreEmail(response.email);
+      setRole(response.role);
+      setPincode(response.pincode ?? '');
+      setToken(response.token);
+      setStoreMode('restore');
+
+      toast.success('Пароль восстановлен!');
+      return response;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Ошибка при восстановлении пароля';
+      toast.error(message);
+      throw error;
+    } finally {
+      setLoading(false);
     }
-
-    const response = apiRes.data;
-
-    setPhone(response.phone);
-    setName(response.name);
-    setStoreEmail(response.email);
-    setRole(response.role);
-    setPincode(response.pincode ?? '');
-    setToken(response.token);
-    setStoreMode('restore');
-
-    return response;
   };
 
   return {
     state,
+    token,
     setMode,
     setPhone: setPhoneState,
     setPassword,
+    setConfirm,
     setPincode: setPincodeState,
     setName: setNameState,
     setEmail: setEmailState,
@@ -227,7 +330,6 @@ export const useLogin = (initialMode: LoginMode = 'authorization') => {
     verifyRegisterCode,
     register,
     restore,
+    loading,
   };
 };
-
-

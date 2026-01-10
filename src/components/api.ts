@@ -1,4 +1,4 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+const API_BASE_URL = 'http://80.255.190.78';
 
 export interface ApiRequestOptions {
   headers?: Record<string, string>;
@@ -26,10 +26,10 @@ export async function get<T = unknown>(
     signal: options.signal,
   });
 
-  if (!res.ok) {
-    const text = await res.text().catch(() => '');
-    throw new Error(`GET ${url} failed: ${res.status} ${text}`);
-  }
+  // if (!res.ok) {
+  //   const text = await res.text().catch(() => '');
+  //   throw new Error(`GET ${url} failed: ${res.status} ${text}`);
+  // }
 
   return (await res.json()) as ApiResponse<T>;
 }
@@ -52,10 +52,10 @@ export async function post<T = unknown, B = unknown>(
     signal: options.signal,
   });
 
-  if (!res.ok) {
-    const text = await res.text().catch(() => '');
-    throw new Error(`POST ${url} failed: ${res.status} ${text}`);
-  }
+  // if (!res.ok) {
+  //   const text = await res.text().catch(() => '');
+  //   throw new Error(`POST ${url} failed: ${res.status} ${text}`);
+  // }
 
   return (await res.json()) as ApiResponse<T>;
 }

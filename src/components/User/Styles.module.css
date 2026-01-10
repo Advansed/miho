@@ -1,0 +1,956 @@
+/* Стили для страницы NewSession */
+.pageContent {
+  --background: radial-gradient(circle at top, #0f172a 0, #020617 45%, #020617 100%);
+}
+
+.pageContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.pageCard {
+  background: rgba(15, 23, 42, 0.95);
+  border-radius: 24px;
+  padding: 32px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.9);
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Контейнер страницы */
+.container {
+  --background: transparent;
+  background: radial-gradient(circle at top, #0f172a 0, #020617 45%, #020617 100%);
+}
+
+/* Основная карточка */
+.card {
+  background: rgba(15, 23, 42, 0.95);
+  border-radius: 24px;
+  padding: 24px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.9);
+}
+
+.cardWrapper {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Верхний header блока */
+.headerBlock {
+  margin-bottom: 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.headerLeft {}
+
+.title {
+  text-align: left;
+  margin-bottom: 8px;
+  color: #e5e7eb;
+  font-weight: 700;
+  font-size: 26px;
+}
+
+/* Информация о пользователе */
+.userInfoRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.userInfoItem {
+  color: #94a3b8;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.userInfoIcon {
+  font-size: 16px;
+}
+
+/* Общая кнопка-акцент */
+.button {
+  --border-radius: 999px;
+  --background: linear-gradient(135deg, #2563eb, #4f46e5);
+  --background-activated: linear-gradient(135deg, #1d4ed8, #4338ca);
+  --background-hover: linear-gradient(135deg, #1d4ed8, #4338ca);
+  --color: #e5e7eb;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  --padding-start: 18px;
+  --padding-end: 18px;
+  text-transform: none;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  font-size: 14px;
+}
+
+/* Кнопка "Новая съёмка" */
+.newShootButton {
+  --box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+}
+
+/* Toolbar */
+.toolbar {
+  --background: rgba(15, 23, 42, 0.95);
+  --border-color: rgba(148, 163, 184, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+.toolbarTitle {
+  color: #e5e7eb;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+/* Кнопка logout в тулбаре */
+.logoutButton {
+  --color: #94a3b8;
+  --background-hover: rgba(148, 163, 184, 0.1);
+}
+
+/* Статистика */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.statCard {
+  background: rgba(30, 41, 59, 0.6);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.statCardTotal {}
+.statCardUpcoming {}
+.statCardCompleted {}
+.statCardAmount {}
+
+.statIconBox {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.statIconBoxBlue {
+  background: rgba(59, 130, 246, 0.2);
+}
+.statIconBoxYellow {
+  background: rgba(245, 158, 11, 0.2);
+}
+.statIconBoxGreen {
+  background: rgba(16, 185, 129, 0.2);
+}
+.statIconBoxPurple {
+  background: rgba(139, 92, 246, 0.2);
+}
+
+.statIconBlue {
+  font-size: 24px;
+  color: #60a5fa;
+}
+.statIconYellow {
+  font-size: 24px;
+  color: #fbbf24;
+}
+.statIconGreen {
+  font-size: 24px;
+  color: #34d399;
+}
+.statIconPurple {
+  font-size: 24px;
+  color: #a78bfa;
+}
+
+.statValue {
+  color: #e5e7eb;
+  font-size: 24px;
+  margin: 0 0 4px;
+}
+
+.statAmountValue {
+  color: #e5e7eb;
+  font-size: 20px;
+  margin: 0 0 4px;
+}
+
+.statLabel {
+  color: #94a3b8;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* Блок ближайшей сессии */
+.cardNextWrapper {
+  max-width: 900px;
+  margin: 32px auto;
+}
+
+.nextSessionCard {
+  background: rgba(30, 41, 59, 0.7);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Декоративный градиент */
+.nextSessionGlow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(
+    circle,
+    rgba(59, 130, 246, 0.1) 0%,
+    transparent 70%
+  );
+  transform: translate(50px, -50px);
+}
+
+/* Header ближайшей сессии */
+.nextSessionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.nextSessionTitle {
+  color: #e5e7eb;
+  font-size: 18px;
+  margin: 0 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nextSessionTitleIcon {
+  color: #fbbf24;
+}
+
+.nextSessionDateSkeleton {
+  width: 200px;
+  height: 24px;
+  border-radius: 8px;
+}
+
+.nextSessionDate {
+  color: #94a3b8;
+  font-size: 14px;
+  margin: 0;
+}
+
+.nextSessionDateEmpty {
+  color: #94a3b8;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Badge ближайшей сессии */
+.nextSessionBadge {
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  font-size: 13px;
+}
+
+/* Skeleton строка */
+.nextSessionSkeletonRow {
+  display: flex;
+  gap: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.nextSessionSkeletonTitle {
+  width: 60%;
+  height: 28px;
+  border-radius: 8px;
+}
+
+.nextSessionSkeletonButton {
+  width: 30%;
+  height: 40px;
+  border-radius: 12px;
+}
+
+/* Контент ближайшей сессии */
+.nextSessionContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.nextSessionInfo {}
+
+.nextSessionType {
+  color: #e5e7eb;
+  font-size: 24px;
+  margin: 0 0 12px;
+  font-weight: 600;
+}
+
+.nextSessionMetaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.nextSessionMetaItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nextSessionMetaIcon {
+  font-size: 18px;
+  color: #94a3b8;
+}
+
+.nextSessionMetaText {
+  color: #cbd5e1;
+  font-size: 15px;
+}
+
+.nextSessionAmount {
+  color: #10b981;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* Кнопки ближайшей сессии */
+.nextSessionButtons {
+  display: flex;
+  gap: 12px;
+}
+
+.payNowButton {
+  --background: linear-gradient(135deg, #10b981, #059669);
+  --background-activated: linear-gradient(135deg, #059669, #047857);
+  --background-hover: linear-gradient(135deg, #059669, #047857);
+  --box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+}
+
+.moreButton {
+  --border-color: rgba(148, 163, 184, 0.3);
+  --color: #cbd5e1;
+}
+
+/* Иконка камеры справа */
+.nextSessionIconBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 20px;
+  border: 2px solid rgba(59, 130, 246, 0.2);
+}
+
+.nextSessionIcon {
+  font-size: 48px;
+  color: #60a5fa;
+}
+
+/* Состояние "нет ближайших" */
+.nextSessionEmpty {
+  text-align: center;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.nextSessionEmptyIconBox {
+  width: 80px;
+  height: 80px;
+  background: rgba(148, 163, 184, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.nextSessionEmptyIcon {
+  font-size: 36px;
+  color: #64748b;
+}
+
+.nextSessionEmptyTitle {
+  color: #e5e7eb;
+  font-size: 18px;
+  margin: 0 0 8px;
+}
+
+.nextSessionEmptyText {
+  color: #94a3b8;
+  font-size: 14px;
+  margin: 0 0 20px;
+}
+
+/* Карточка списка сессий */
+.sessionsCardWrapper {
+  max-width: 900px;
+  margin: 0 auto 40px;
+}
+
+.sessionsCard {
+  background: rgba(30, 41, 59, 0.7);
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  overflow: hidden;
+}
+
+/* Header списка сессий */
+.sessionsHeader {
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sessionsTitle {
+  color: #e5e7eb;
+  font-size: 18px;
+  margin: 0 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sessionsTitleIcon {
+  color: #a78bfa;
+}
+
+.sessionsSubtitle {
+  color: #94a3b8;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Кнопка обновления */
+.refreshButton {
+  --color: #94a3b8;
+  --padding-start: 8px;
+  --padding-end: 8px;
+}
+
+/* Обертка списка */
+.sessionsListWrapper {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+/* IonList */
+.list {
+  background: transparent;
+  padding: 0;
+}
+
+/* Элемент списка */
+.sessionItem {
+  --background: transparent;
+  --border-color: transparent;
+  padding: 0;
+}
+
+.sessionItemInner {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+/* Аватар сessии */
+.sessionAvatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid;
+}
+
+.sessionAvatarFinished {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+.sessionAvatarPlanned {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.sessionAvatarPending {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+/* Цвет иконок в аватаре */
+.sessionAvatarIconFinished {
+  font-size: 24px;
+  color: #34d399;
+}
+
+.sessionAvatarIconPlanned {
+  font-size: 24px;
+  color: #60a5fa;
+}
+
+.sessionAvatarIconPending {
+  font-size: 24px;
+  color: #fbbf24;
+}
+
+/* Информация по сессии */
+.sessionInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.sessionTitle {
+  color: #e5e7eb;
+  font-size: 16px;
+  margin: 0 0 6px;
+  font-weight: 500;
+}
+
+.sessionMetaRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.sessionMetaItem {
+  color: #94a3b8;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sessionMetaIcon {
+  font-size: 14px;
+}
+
+.sessionAmountItem {
+  color: #10b981;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sessionAmountIcon {
+  font-size: 14px;
+}
+
+/* Правая часть элемента */
+.sessionRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.sessionBadge {
+  --padding-top: 6px;
+  --padding-bottom: 6px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  font-size: 12px;
+}
+
+/* Кнопка "Оплатить" в списке */
+.sessionPayButton {
+  --color: #60a5fa;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  margin: 0;
+  font-size: 12px;
+  height: auto;
+}
+
+/* Пустой список сессий */
+.sessionsEmpty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #94a3b8;
+}
+
+.sessionsEmptyIconBox {
+  width: 80px;
+  height: 80px;
+  background: rgba(148, 163, 184, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.sessionsEmptyIcon {
+  font-size: 36px;
+  color: #64748b;
+}
+
+.sessionsEmptyTitle {
+  color: #e5e7eb;
+  font-size: 18px;
+  margin: 0 0 8px;
+}
+
+.sessionsEmptyText {
+  font-size: 14px;
+  margin: 0 0 20px;
+}
+
+/* Skeleton элементы списка */
+.sessionAvatarSkeleton {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+}
+
+.sessionInfoSkeleton {
+  flex: 1;
+}
+
+.sessionTitleSkeleton {
+  width: 60%;
+  height: 18px;
+}
+
+.sessionMetaSkeletonRow {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.sessionMetaSkeleton {
+  width: 80px;
+  height: 14px;
+}
+
+.sessionBadgeSkeleton {
+  width: 80px;
+  height: 24px;
+  border-radius: 12px;
+}
+
+/* ==================== Стили для страницы NewSession ==================== */
+
+/* Убраны стили модального окна и добавлены стили для страницы */
+
+.formSection {
+  background: rgba(30, 41, 59, 0.7);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.sectionTitle {
+  color: #e5e7eb;
+  font-size: 18px;
+  margin: 0 0 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sectionIcon {
+  color: #60a5fa;
+  font-size: 20px;
+}
+
+.formItem {
+  --background: transparent;
+  --border-color: rgba(148, 163, 184, 0.2);
+  --color:  white;
+  margin-bottom: 16px;
+}
+
+.formItem:last-child {
+  margin-bottom: 0;
+}
+
+.required {
+  color: #f87171;
+}
+
+.inputError {
+  --border-color: #f87171;
+}
+
+.inputError ion-input,
+.inputError ion-select,
+.inputError ion-datetime {
+  --border-color: #f87171 !important;
+  --color: #f87171 !important;
+}
+
+.errorNote {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.previewSection {
+  background: rgba(30, 41, 59, 0.8);
+  border-radius: 16px;
+  padding: 16px;
+  margin: 20px 0;
+  border-left: 4px solid #60a5fa;
+}
+
+.previewSection h4 {
+  color: #94a3b8;
+  font-size: 14px;
+  margin: 0 0 8px 0;
+}
+
+.previewSection p {
+  color: #cbd5e1;
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.formActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.cancelButton {
+  --background: rgba(148, 163, 184, 0.2);
+  --color: #cbd5e1;
+  --background-hover: rgba(148, 163, 184, 0.3);
+  flex: 1;
+}
+
+.submitButton {
+  --background: linear-gradient(135deg, #2563eb, #4f46e5);
+  --background-activated: linear-gradient(135deg, #1d4ed8, #4338ca);
+  --background-hover: linear-gradient(135deg, #1d4ed8, #4338ca);
+  --box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+  flex: 2;
+}
+
+/* Стилизация IonSelect и IonDatetime для темной темы */
+ion-select::part(icon) {
+  color: #94a3b8;
+}
+
+ion-select::part(text) {
+  color: #e5e7eb;
+}
+
+ion-select::part(placeholder) {
+  color: #64748b;
+}
+
+ion-datetime {
+  --background: rgba(30, 41, 59, 0.8);
+  --background-rgb: 30, 41, 59;
+  --border-radius: 8px;
+  --border-color: rgba(148, 163, 184, 0.2);
+  --color: #e5e7eb;
+  --placeholder-color: #64748b;
+}
+
+ion-datetime::part(wheel-item) {
+  color: #e5e7eb;
+}
+
+ion-datetime::part(wheel-item active) {
+  color: #60a5fa;
+}
+
+/* Стилизация IonTextarea */
+ion-textarea {
+  --background: rgba(30, 41, 59, 0.8);
+  --border-radius: 8px;
+  --border-color: rgba(148, 163, 184, 0.2);
+  --color: #e5e7eb;
+  --placeholder-color: #64748b;
+}
+
+/* Стилизация IonToggle */
+ion-toggle {
+  --background: rgba(148, 163, 184, 0.3);
+  --background-checked: #2563eb;
+  --handle-background: #e5e7eb;
+  --handle-background-checked: #e5e7eb;
+}
+
+/* Адаптив для страницы NewSession */
+@media (max-width: 768px) {
+  .pageContainer {
+    padding: 16px;
+  }
+  
+  .pageCard {
+    padding: 24px;
+  }
+  
+  .formActions {
+    flex-direction: column;
+  }
+  
+  .cancelButton,
+  .submitButton {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .pageCard {
+    padding: 20px;
+    border-radius: 20px;
+  }
+  
+  .formSection {
+    padding: 16px;
+  }
+}
+
+/* Общий адаптив */
+@media (max-width: 640px) {
+  .headerBlock {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .nextSessionContent {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .nextSessionIconBox {
+    width: 100px;
+    height: 100px;
+  }
+
+  .sessionItemInner {
+    padding: 16px;
+  }
+}
+
+.stepsHeader {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.stepActive {
+  font-weight: 600;
+  color: var(--ion-color-primary);
+}
+
+.stepInactive {
+  color: var(--ion-color-medium);
+}
+
+/* Прогресс индикатор */
+.stepsProgress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 16px 0;
+}
+
+.stepDot {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--ion-color-light);
+  color: var(--ion-color-medium);
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.stepDotActive {
+  background-color: var(--ion-color-primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
+}
+
+.stepLine {
+  flex: 1;
+  height: 2px;
+  background-color: var(--ion-color-light);
+  max-width: 60px;
+}
+
+.stepIndicator {
+  font-size: 12px;
+  color: var(--ion-color-medium);
+  font-weight: 600;
+  padding: 4px 8px;
+}
+
+.previewContent {
+  padding: 12px;
+  background-color: var(--ion-color-light);
+  border-radius: 8px;
+  line-height: 1.8;
+}
+
+.previewContent p {
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.previewContent hr {
+  border: none;
+  border-top: 1px solid var(--ion-color-medium);
+  margin: 12px 0;
+}

@@ -9,7 +9,8 @@ export interface LoginStoreState {
   role:         string;
   pincode:      string;
   token:        string;
-  mode: LoginMode;
+  mode:         LoginMode;
+  loading:      boolean;
   setPhone:     (phone: string) => void;
   setName:      (name: string) => void;
   setEmail:     (email: string) => void;
@@ -17,12 +18,9 @@ export interface LoginStoreState {
   setPincode:   (pincode: string) => void;
   setToken:     (token: string) => void;
   setMode:      (mode: LoginMode) => void;
+  setLoading:   (loading: boolean) => void;
   reset:        () => void;
 }
-
-const initialState: Omit<LoginStoreState, keyof Omit<LoginStoreState,
-  'phone' | 'name' | 'email' | 'role' | 'pincode' | 'mode'
->> = {} as never;
 
 export const useLoginStore = create<LoginStoreState>((set) => ({
   phone:        '',
@@ -32,6 +30,7 @@ export const useLoginStore = create<LoginStoreState>((set) => ({
   pincode:      '',
   token:        '',
   mode:         'login',
+  loading:      false,
   setPhone:     (phone) => set({ phone }),
   setName:      (name) => set({ name }),
   setEmail:     (email) => set({ email }),
@@ -39,6 +38,7 @@ export const useLoginStore = create<LoginStoreState>((set) => ({
   setPincode:   (pincode) => set({ pincode }),
   setToken:     (token) => set({ token }),
   setMode:      (mode) => set({ mode }),
+  setLoading:   (loading) => set({ loading }),
   reset:        () =>
     set({
       phone:    '',
@@ -48,7 +48,14 @@ export const useLoginStore = create<LoginStoreState>((set) => ({
       pincode:  '',
       token:    '',
       mode:     'login',
+      loading:  false,
     }),
 }));
 
 
+
+export const    useToken = () => {
+  const token    = useLoginStore( (state) => state.token );
+  const setToken = useLoginStore( (state) => state.setToken );
+  return { token, setToken };
+};

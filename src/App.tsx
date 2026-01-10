@@ -1,6 +1,6 @@
-import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
+import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact, useIonRouter } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, useHistory } from 'react-router-dom';
 import Page from './pages/Page';
 import Home from './pages/Home';
 import LoginPage from './pages/Login';
@@ -34,29 +34,62 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import { ToastProvider } from './components/Toast';
+import { useToken } from './components/Login/LoginStore';
+import { useEffect, useState } from 'react';
 
 setupIonicReact();
 
-const App: React.FC = () => {
+const DefApp: React.FC = () => {
   return (
     <IonApp>
-      <IonReactRouter>
-        <IonSplitPane contentId="main">
-          <IonRouterOutlet id="main">
-            <Route path="/" exact={true}>
-              <Home />
-            </Route>
-            <Route path="/login" exact={true}>
-              <LoginPage />
-            </Route>
-            <Route path="/folder/:name" exact={true}>
-              <Page />
-            </Route>
-          </IonRouterOutlet>
-        </IonSplitPane>
-      </IonReactRouter>
+      <ToastProvider>
+        <IonReactRouter>
+          <IonSplitPane contentId="main">
+            <IonRouterOutlet id="main">
+              <Route path="/" exact={true}>
+                <Home />
+              </Route>
+              <Route path="/login" exact={true}>
+                <LoginPage />
+              </Route>
+              <Route path="/folder/:name" exact={true}>
+                <Page />
+              </Route>
+            </IonRouterOutlet>
+          </IonSplitPane>
+        </IonReactRouter>
+      </ToastProvider>
     </IonApp>
   );
+};
+
+const App: React.FC = () => {
+  const { token } = useToken()
+  
+  if( token )
+    return (
+      <IonApp>
+        <ToastProvider>
+          <IonReactRouter>
+            <IonSplitPane contentId="main">
+              <IonRouterOutlet id="main">
+                <Route path="/" exact={true}>
+                  <Page />
+                </Route>
+                <Route path="/login" exact={true}>
+                  <Page />
+                </Route>
+                <Route path="/folder/:name" exact={true}>
+                  <Page />
+                </Route>
+              </IonRouterOutlet>
+            </IonSplitPane>
+          </IonReactRouter>
+        </ToastProvider>
+      </IonApp>
+    )
+  else return <DefApp />
 };
 
 export default App;

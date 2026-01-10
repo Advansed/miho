@@ -1,0 +1,96 @@
+.container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: linear-gradient(135deg, #0f172a, #020617);
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  padding: 24px 20px 28px;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.9);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(14px);
+}
+
+.title {
+  margin: 0 0 20px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #e5e7eb;
+  text-align: center;
+}
+
+/* Список и айтемы */
+
+.list {
+  --ion-background-color: transparent;
+  background: transparent;
+  padding: 0;
+}
+
+.item {
+  --background: transparent;
+  --inner-padding-top: 10px;
+  --inner-padding-bottom: 10px;
+  --inner-padding-start: 0;
+  --inner-padding-end: 0;
+  --min-height: 64px;
+  --border-radius: 12px;
+  --border-color: rgba(148, 163, 184, 0.25);
+  --border-width: 1px;
+  --inner-box-shadow: none;
+  margin-bottom: 12px;
+}
+
+/* Лейбл */
+
+.label {
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color:  white !important;
+  margin-bottom: 4px;
+}
+
+/* Input (через host + ::part(native)) */
+
+.input {
+  --color: #e5e7eb;
+  --placeholder-color: #6b7280;
+  --placeholder-opacity: 1;
+  --highlight-color-focused: #3b82f6;
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 6px;
+  --padding-bottom: 4px;
+  font-size: 15px;
+}
+
+/* Для Ionic 6/7 важно дотянуться до внутреннего поля */ /* [web:1][web:14] */
+.input::part(native) {
+  padding: 0;
+}
+
+/* Кнопка */
+
+.button {
+  margin-top: 8px;
+  --background: linear-gradient(135deg, #2563eb, #4f46e5);
+  --background-hover: #1d4ed8;
+  --background-activated: #1e40af;
+  --border-radius: 999px;
+  --box-shadow: 0 12px 24px rgba(37, 99, 235, 0.6);
+  --padding-top: 14px;
+  --padding-bottom: 14px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --color: #f9fafb;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: none;
+  font-size: 15px;
+}

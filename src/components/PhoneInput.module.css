@@ -1,0 +1,51 @@
+.phoneInputContainer {
+  width: 100%;
+  margin-bottom: 16px;
+  padding-right: 1em;
+}
+
+.labelContainer {
+  margin-bottom: 4px;
+}
+
+.label {
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: #9ca3af;
+  display: inline-block;
+}
+
+.required {
+  color: #ef4444;
+  margin-left: 4px;
+}
+
+.inputWrapper {
+  width: 100%;
+}
+
+.input {
+  --background: transparent !important;
+  --border-color: rgba(148, 163, 184, 0.25);
+  --border-radius: 12px;
+  --border-width: 1px;
+  --color: #e5e7eb;
+  --placeholder-color: #6b7280;
+  --highlight-color-focused: #3b82f6;
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 6px;
+  --padding-bottom: 4px;
+  font-size: 15px;
+}
+
+.input::part(native) {
+  padding: 0;
+}
+
+.errorText {
+  color: #ef4444;
+  font-size: 11px;
+  margin-top: 4px;
+  font-weight: 500;
+}
