@@ -3,9 +3,8 @@
   margin: 16px 0;
 }
 
-/* В SMSInput.module.css заменить .input */
 .input {
-  flex: 1; /* Растягивается пропорционально */
+  flex: 1;
   min-width: 1em;
   max-width: 2em;
   height: 48px;
@@ -23,7 +22,7 @@
 
 .inputsContainer {
   display: flex;
-  justify-content: space-between; /* Вместо center с gap */
+  justify-content: space-between;
   align-items: center;
   width: 100%;
 }
@@ -56,7 +55,6 @@
   margin: 0 4px;
 }
 
-/* Анимация для фокуса */
 @keyframes pulse {
   0%, 100% {
     opacity: 1;
@@ -70,35 +68,33 @@
   animation: pulse 1.5s infinite;
 }
 
-/* Для мобильных устройств */
 @media (max-width: 480px) {
   .inputsContainer {
     gap: 12px;
   }
-  
+
   .input {
     width: 50px;
     height: 50px;
     font-size: 20px;
   }
-  
+
   .separator {
     width: 8px;
   }
 }
 
-/* Для очень маленьких экранов */
 @media (max-width: 360px) {
   .inputsContainer {
     gap: 10px;
   }
-  
+
   .input {
     width: 46px;
     height: 46px;
     font-size: 18px;
   }
-  
+
   .separator {
     width: 6px;
   }

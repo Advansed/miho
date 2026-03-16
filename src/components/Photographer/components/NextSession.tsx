@@ -1,4 +1,3 @@
-// NextSessionCard.tsx
 import React from 'react';
 import {
   IonBadge,
@@ -10,60 +9,76 @@ import {
   calendarOutline,
   cameraOutline,
   cashOutline,
-  locationOutline
+  locationOutline,
+  personOutline
 } from 'ionicons/icons';
-import styles from './Styles.module.css';
-
-type SessionStatus = 'planned' | 'pending_payment' | 'finished';
-
-export interface UserSession {
-  id: number;
-  date: string;
-  type: string;
-  locationHint?: string;
-  status: SessionStatus;
-  isPaid: boolean;
-  amount: number;
-}
+import styles from '../../User/Styles.module.css';
+import type { Session } from '../../Store/sessionStore';
+import { useUserStore } from '../../Store/sessionStore';
 
 interface NextSessionCardProps {
   loading: boolean;
-  nextSession: UserSession | null;
-  onPaySession: (id: number) => void;
-  onOpenSession: (id: number) => void;
-  onCreateOrder: () => void;
-  formatDate: (dateStr: string) => string;
-  getStatusLabel: (session: UserSession) => string;
-  getStatusColor: (session: UserSession) => string;
+  nextSession: Session | null;
+  onOpenSession: (session: Session) => void;
+  formatDate: (dateStr: string, timeStr?: string) => string;
+  getStatusLabel: (session: Session) => string;
+  getStatusColor: (session: Session) => string;
 }
 
 const NextSessionCard: React.FC<NextSessionCardProps> = ({
   loading,
   nextSession,
-  onPaySession,
   onOpenSession,
-  onCreateOrder,
   formatDate,
   getStatusLabel,
   getStatusColor
 }) => {
+  const sessionTypes = useUserStore((s) => s.session_types);
+
+  const getTypeName = (session: Session) => {
+    const typeId = session.type;
+    return sessionTypes.find((t) => t.id === typeId)?.name ?? typeId;
+  };
+
+  const getClientName = (session: Session): string => {
+    return session.name || session.email || session.phone || 'Клиент';
+  };
+
+  const formatTime = (timeStr: string): string => {
+    // Форматируем время из формата HH-mm-ss или HH:mm:ss в HH:mm
+    if (!timeStr) return '';
+    return timeStr.split(/[-:]/).slice(0, 2).join(':');
+  };
+
+  const handleCardClick = () => {
+    if (nextSession && !loading) {
+      onOpenSession(nextSession);
+    }
+  };
+
   return (
     <div className={styles.cardNextWrapper}>
-      <div className={styles.nextSessionCard}>
+      <div 
+        className={styles.nextSessionCard}
+        onClick={handleCardClick}
+        style={{ cursor: nextSession && !loading ? 'pointer' : 'default' }}
+      >
         <div className={styles.nextSessionGlow} />
 
         <div className={styles.nextSessionHeader}>
           <div>
             <h2 className={styles.nextSessionTitle}>
               <IonIcon icon={calendarOutline} className={styles.nextSessionTitleIcon} />
-              Ближайшая фотосессия
+              Ближайшая сессия
             </h2>
             {loading ? (
               <IonSkeletonText animated className={styles.nextSessionDateSkeleton} />
             ) : nextSession ? (
-              <p className={styles.nextSessionDate}>
-                {formatDate(nextSession.date)}
-              </p>
+              <div className={styles.nextSessionDateTime}>
+                <p className={styles.nextSessionDate}>
+                  {formatDate(nextSession.date, nextSession.time)}
+                </p>
+              </div>
             ) : (
               <p className={styles.nextSessionDateEmpty}>
                 Нет предстоящих сессий
@@ -86,37 +101,35 @@ const NextSessionCard: React.FC<NextSessionCardProps> = ({
         ) : nextSession ? (
           <div className={styles.nextSessionContent}>
             <div className={styles.nextSessionInfo}>
-              <h3 className={styles.nextSessionType}>{nextSession.type}</h3>
+              <h3 className={styles.nextSessionType}>{getTypeName(nextSession)}</h3>
               <div className={styles.nextSessionMetaRow}>
-                {nextSession.locationHint && (
+                <div className={styles.nextSessionMetaItem}>
+                  <IonIcon icon={personOutline} className={styles.nextSessionMetaIcon} />
+                  <span className={styles.nextSessionMetaText}>
+                    {getClientName(nextSession)}
+                  </span>
+                </div>
+                {nextSession.location && (
                   <div className={styles.nextSessionMetaItem}>
                     <IonIcon icon={locationOutline} className={styles.nextSessionMetaIcon} />
                     <span className={styles.nextSessionMetaText}>
-                      {nextSession.locationHint}
+                      {nextSession.location}
                     </span>
                   </div>
                 )}
                 <div className={styles.nextSessionMetaItem}>
                   <IonIcon icon={cashOutline} className={styles.nextSessionMetaIcon} />
                   <span className={styles.nextSessionAmount}>
-                    {nextSession.amount.toLocaleString()} ₽
+                    {nextSession.amount?.toLocaleString?.() ?? 0} ₽
                   </span>
                 </div>
               </div>
 
-              <div className={styles.nextSessionButtons}>
-                {!nextSession.isPaid && (
-                  <IonButton
-                    className={`${styles.button} ${styles.payNowButton}`}
-                    onClick={() => onPaySession(nextSession.id)}
-                  >
-                    Оплатить сейчас
-                  </IonButton>
-                )}
+              <div className={styles.nextSessionButtons} onClick={(e) => e.stopPropagation()}>
                 <IonButton
                   fill="outline"
                   className={styles.moreButton}
-                  onClick={() => onOpenSession(nextSession.id)}
+                  onClick={() => onOpenSession(nextSession)}
                 >
                   Подробнее
                 </IonButton>
@@ -133,15 +146,11 @@ const NextSessionCard: React.FC<NextSessionCardProps> = ({
               <IonIcon icon={calendarOutline} className={styles.nextSessionEmptyIcon} />
             </div>
             <h3 className={styles.nextSessionEmptyTitle}>
-              Нет предстоящих фотосессий
+              Нет предстоящих сессий
             </h3>
             <p className={styles.nextSessionEmptyText}>
-              Запланируйте свою первую съёмку
+              У вас пока нет запланированных фотосессий
             </p>
-            <IonButton className={styles.button} onClick={onCreateOrder}>
-              <IonIcon slot="start" icon={calendarOutline} />
-              Запланировать съёмку
-            </IonButton>
           </div>
         )}
       </div>

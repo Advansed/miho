@@ -14,6 +14,7 @@ import { Registration } from './registration';
 import { Restore } from './restore';
 import { LoginMode, useLogin } from './useLogin';
 import styles from './Styles.module.css'; // Изменено на Styles.module.css
+import { useAuth } from './LoginStore';
 
 interface LoginProps {
   initialMode?: LoginMode;
@@ -38,6 +39,8 @@ export const Login: React.FC<LoginProps> = ({ initialMode = 'authorization' }) =
     loading,
   } = useLogin(initialMode);
 
+  const { setAuth } = useAuth()
+
   const handleSubmit = async () => {
     console.log("submit", state);
     if (state.mode === 'authorization') {
@@ -54,6 +57,9 @@ export const Login: React.FC<LoginProps> = ({ initialMode = 'authorization' }) =
           name:     state.name,
           email:    state.email,
         });
+
+        setAuth(true)
+        
         setRegistrationStep('phone');
       }
     } else if (state.mode === 'restore') {

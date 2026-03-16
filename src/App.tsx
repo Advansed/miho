@@ -35,50 +35,23 @@ import '@ionic/react/css/palettes/dark.system.css';
 /* Theme variables */
 import './theme/variables.css';
 import { ToastProvider } from './components/Toast';
-import { useToken } from './components/Login/LoginStore';
-import { useEffect, useState } from 'react';
+import { useAuth } from './components/Login/LoginStore';
+import { useApp } from './useApp';
 
 setupIonicReact();
 
 const DefApp: React.FC = () => {
   return (
-    <IonApp>
-      <ToastProvider>
-        <IonReactRouter>
-          <IonSplitPane contentId="main">
-            <IonRouterOutlet id="main">
-              <Route path="/" exact={true}>
-                <Home />
-              </Route>
-              <Route path="/login" exact={true}>
-                <LoginPage />
-              </Route>
-              <Route path="/folder/:name" exact={true}>
-                <Page />
-              </Route>
-            </IonRouterOutlet>
-          </IonSplitPane>
-        </IonReactRouter>
-      </ToastProvider>
-    </IonApp>
-  );
-};
-
-const App: React.FC = () => {
-  const { token } = useToken()
-  
-  if( token )
-    return (
+    <ToastProvider>
       <IonApp>
-        <ToastProvider>
           <IonReactRouter>
             <IonSplitPane contentId="main">
               <IonRouterOutlet id="main">
                 <Route path="/" exact={true}>
-                  <Page />
+                  <Home />
                 </Route>
                 <Route path="/login" exact={true}>
-                  <Page />
+                  <LoginPage />
                 </Route>
                 <Route path="/folder/:name" exact={true}>
                   <Page />
@@ -86,8 +59,43 @@ const App: React.FC = () => {
               </IonRouterOutlet>
             </IonSplitPane>
           </IonReactRouter>
-        </ToastProvider>
       </IonApp>
+    </ToastProvider>
+  );
+};
+
+const AppContent: React.FC = () => {
+  useApp();
+
+  return (
+    <IonApp>
+        <IonReactRouter>
+          <IonSplitPane contentId="main">
+            <IonRouterOutlet id="main">
+              <Route path="/" exact={true}>
+                <Page />
+              </Route>
+              <Route path="/login" exact={true}>
+                <Page />
+              </Route>
+              <Route path="/folder/:name" exact={true}>
+                <Page />
+              </Route>
+            </IonRouterOutlet>
+          </IonSplitPane>
+        </IonReactRouter>
+    </IonApp>
+  );
+};
+
+const App: React.FC = () => {
+  const { auth } = useAuth();
+
+  if (auth)
+    return (
+      <ToastProvider>
+        <AppContent />
+      </ToastProvider>
     )
   else return <DefApp />
 };

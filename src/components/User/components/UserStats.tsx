@@ -11,17 +11,15 @@ import {
   callOutline,
   addCircleOutline
 } from 'ionicons/icons';
-import styles from './Styles.module.css';
+import styles from '../Styles.module.css';
+import type { SessionsStats } from '../../Store/sessionStore';
 
 export interface UserStatsProps {
   displayName: string;
   email?: string | null;
   phone?: string | null;
   isPhotographer: boolean;
-  total: number;
-  upcoming: number;
-  completed: number;
-  totalAmount: number;
+  stats?: SessionsStats | null;
   onCreateOrder: () => void;
 }
 
@@ -30,13 +28,14 @@ const UserStats: React.FC<UserStatsProps> = ({
   email,
   phone,
   isPhotographer,
-  total,
-  upcoming,
-  completed,
-  totalAmount,
+  stats,
   onCreateOrder
 }) => {
   const contact = email || phone;
+  const total = stats?.total ?? 0;
+  const upcoming = stats?.upcoming ?? 0;
+  const completed = stats?.completed ?? 0;
+  const totalAmount = stats?.totalAmount ?? 0;
 
   return (
     <>

@@ -17,7 +17,6 @@ export const SMSInput: React.FC<SMSInputProps> = ({
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [digits, setDigits] = useState<string[]>(Array(length).fill(''));
 
-  // Синхронизируем внешнее значение с внутренним состоянием
   useEffect(() => {
     if (value.length <= length) {
       const newDigits = Array(length).fill('');
@@ -28,7 +27,6 @@ export const SMSInput: React.FC<SMSInputProps> = ({
     }
   }, [value, length]);
 
-  // Фокусировка на первом инпуте при монтировании
   useEffect(() => {
     if (!disabled && inputRefs.current[0]) {
       setTimeout(() => {
@@ -38,18 +36,15 @@ export const SMSInput: React.FC<SMSInputProps> = ({
   }, [disabled]);
 
   const handlePinChange = (value: string, index: number) => {
-    // Оставляем только цифры и берем последнюю цифру
     const digit = value.replace(/\D/g, '').slice(-1);
-    
+
     const newDigits = [...digits];
     newDigits[index] = digit;
     setDigits(newDigits);
-    
-    // Обновляем родительский компонент
+
     const fullCode = newDigits.join('');
     onChange(fullCode);
-    
-    // Автофокус на следующее поле
+
     if (digit && index < length - 1) {
       const nextInput = inputRefs.current[index + 1];
       if (nextInput) {
@@ -60,22 +55,19 @@ export const SMSInput: React.FC<SMSInputProps> = ({
 
   const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
     if (e.key === 'Backspace') {
-      // Если поле пустое и не первый инпут - переходим к предыдущему
       if (!digits[index] && index > 0) {
         const prevInput = inputRefs.current[index - 1];
         if (prevInput) {
           prevInput.focus();
         }
       } else if (digits[index]) {
-        // Очищаем текущее поле
         const newDigits = [...digits];
         newDigits[index] = '';
         setDigits(newDigits);
         onChange(newDigits.join(''));
       }
     }
-    
-    // Стрелка влево
+
     if (e.key === 'ArrowLeft' && index > 0) {
       e.preventDefault();
       const prevInput = inputRefs.current[index - 1];
@@ -83,8 +75,7 @@ export const SMSInput: React.FC<SMSInputProps> = ({
         prevInput.focus();
       }
     }
-    
-    // Стрелка вправо
+
     if (e.key === 'ArrowRight' && index < length - 1) {
       e.preventDefault();
       const nextInput = inputRefs.current[index + 1];
@@ -92,9 +83,8 @@ export const SMSInput: React.FC<SMSInputProps> = ({
         nextInput.focus();
       }
     }
-    
-    // Блокируем ввод нецифровых символов
-    if (!/\d/.test(e.key) && 
+
+    if (!/\d/.test(e.key) &&
         !['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(e.key)) {
       e.preventDefault();
     }
@@ -112,13 +102,12 @@ export const SMSInput: React.FC<SMSInputProps> = ({
   const handlePaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
     const pastedText = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, length);
-    
+
     if (pastedText.length === length) {
       const newDigits = pastedText.split('');
       setDigits(newDigits);
       onChange(pastedText);
-      
-      // Фокус на последний инпут
+
       const lastInput = inputRefs.current[length - 1];
       if (lastInput) {
         lastInput.focus();

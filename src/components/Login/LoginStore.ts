@@ -1,8 +1,10 @@
 import { create } from 'zustand';
+import { useFilesStore } from '../Store/filesStore';
 
 type LoginMode = 'register' | 'login' | 'restore';
 
 export interface LoginStoreState {
+  auth:         boolean;
   phone:        string;
   name:         string;
   email:        string;
@@ -11,6 +13,7 @@ export interface LoginStoreState {
   token:        string;
   mode:         LoginMode;
   loading:      boolean;
+  setAuth:      (auth: boolean) => void;
   setPhone:     (phone: string) => void;
   setName:      (name: string) => void;
   setEmail:     (email: string) => void;
@@ -23,6 +26,7 @@ export interface LoginStoreState {
 }
 
 export const useLoginStore = create<LoginStoreState>((set) => ({
+  auth:         false,
   phone:        '',
   name:         '',
   email:        '',
@@ -31,6 +35,7 @@ export const useLoginStore = create<LoginStoreState>((set) => ({
   token:        '',
   mode:         'login',
   loading:      false,
+  setAuth:      (auth) => set({ auth}),
   setPhone:     (phone) => set({ phone }),
   setName:      (name) => set({ name }),
   setEmail:     (email) => set({ email }),
@@ -39,7 +44,8 @@ export const useLoginStore = create<LoginStoreState>((set) => ({
   setToken:     (token) => set({ token }),
   setMode:      (mode) => set({ mode }),
   setLoading:   (loading) => set({ loading }),
-  reset:        () =>
+  reset:        () => {
+    useFilesStore.getState().clearSessionFiles();
     set({
       phone:    '',
       name:     '',
@@ -49,13 +55,29 @@ export const useLoginStore = create<LoginStoreState>((set) => ({
       token:    '',
       mode:     'login',
       loading:  false,
-    }),
+    });
+  },
 }));
 
 
 
 export const    useToken = () => {
-  const token    = useLoginStore( (state) => state.token );
-  const setToken = useLoginStore( (state) => state.setToken );
+  const token     = useLoginStore( (state) => state.token );
+  const setToken  = useLoginStore( (state) => state.setToken );
   return { token, setToken };
 };
+
+export const  useAuth = () => {
+  const auth      = useLoginStore( (state) => state.auth )
+  const setAuth   = useLoginStore( (state) => state.setAuth )
+  return { auth, setAuth }
+}
+
+
+export const  useUserData = () => {
+  const name        = useLoginStore( (state) => state.name )
+  const phone       = useLoginStore( (state) => state.phone )
+  const email       = useLoginStore( (state) => state.email )
+
+  return { name, phone, email }
+}

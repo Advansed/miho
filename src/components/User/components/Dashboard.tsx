@@ -27,78 +27,59 @@ import {
   mailOutline,
   checkmarkCircleOutline
 } from 'ionicons/icons';
-import styles from './Styles.module.css';
-import { useLoginStore } from '../Login/LoginStore';
+import styles from '../Styles.module.css';
+import { useLoginStore } from '../../Login/LoginStore';
 import UserStats from './UserStats';
 import NextSessionCard from './NextSession';
 import ClientSessionsList from './SessionList';
-import { useToast } from '../Toast';
-import { useSession } from './useSession'; // Импортируем хук для работы с сессиями
+import { useToast } from '../../Toast';
+import { useSession } from '../useSession';
 import AddSessionModal from './NewSession';
-
-type SessionStatus = 'planned' | 'pending_payment' | 'finished';
-
-interface UserSession {
-  id: number;
-  date: string;
-  type: string;
-  locationHint?: string;
-  status: SessionStatus;
-  isPaid: boolean;
-  amount: number;
-}
+import type { Session } from '../../Store/sessionStore';
+import { usePhotographer } from '../../Store/usePhotographer';
 
 interface DashProps {
   onClose?:  () => void;
   onNew?:    () => Promise<void>;
+  onOpenSession?: (session: Session) => void;
 }
 
 
-const getStatusLabel = (session: UserSession) => {
-  if (!session.isPaid && session.status !== 'finished') return 'Ожидает оплаты';
+const getStatusLabel = (session: Session) => {
+  if (session.status === 'draft') return 'Черновик';
   if (session.status === 'planned') return 'Назначена';
-  if (session.status === 'finished') return 'Завершена';
+  if (session.status === 'in_progress') return 'Идет съемка';
+  if (session.status === 'completed' && !session.isPaid) return 'Ждет оплаты';
+  if (session.status === 'completed' && session.isPaid) return 'Завершена';
   return 'В обработке';
 };
 
-const getStatusColor = (session: UserSession) => {
-  if (!session.isPaid && session.status !== 'finished') return 'warning';
+const getStatusColor = (session: Session) => {
+  if (session.status === 'draft') return 'light';
   if (session.status === 'planned') return 'primary';
-  if (session.status === 'finished') return 'success';
+  if (session.status === 'in_progress') return 'secondary';
+  if (session.status === 'completed' && !session.isPaid) return 'warning';
+  if (session.status === 'completed' && session.isPaid) return 'success';
   return 'medium';
 };
 
-const UserDashboard: React.FC<DashProps> = ({onClose, onNew}) => {
+const UserDashboard: React.FC<DashProps> = ({ onClose, onNew, onOpenSession }) => {
   const { name, email, phone, role, token, reset: resetLoginStore } = useLoginStore();
 
-  // Используем хук useSession вместо локального состояния
-  const { 
-    sessions, 
-    stats, 
-    nextSession, 
-    loading, 
-    error, 
-    fetchSessions 
+  const {
+    stats,
+    nextSession,
+    loading,
+    get_datas,
   } = useSession();
 
   const [showLogoutAlert, setShowLogoutAlert] = useState(false);
-  const [ add, setAdd ] = useState( false)
-  const toast = useToast()
-
-  useEffect(() => {
-    if (token) {
-      fetchSessions( token );
-    }
-  }, [token]);
+  const [add, setAdd] = useState(false);
+  const toast = useToast();
 
   const loadDashboardData = async () => {
-    if (!token) {
-      toast.error('Токен не найден. Пожалуйста, войдите снова.');
-      return;
-    }
-    
     try {
-      await fetchSessions(token);
+      await get_datas();
     } catch (err) {
       console.error('Ошибка загрузки данных:', err);
       toast.error('Не удалось загрузить данные сессий');
@@ -106,17 +87,16 @@ const UserDashboard: React.FC<DashProps> = ({onClose, onNew}) => {
   };
 
   const handleCreateOrder = () => {
-    
+
     if(onNew) onNew()
-
-    //toast.info('Функционал создания заказа в разработке');
   };
 
-  const handleOpenSession = (id: number) => {
-    toast.info(`Открытие деталей сессии #${id} в разработке`);
+  const handleOpenSession = (session: Session) => {
+    if (onOpenSession) onOpenSession( session );
+    else toast.info(`Открытие деталей сессии #${session.id} в разработке`);
   };
 
-  const handlePaySession = (id: number) => {
+  const handlePaySession = (id: string) => {
     toast.info(`Оплата сессии #${id} в разработке`);
   };
 
@@ -163,27 +143,13 @@ const UserDashboard: React.FC<DashProps> = ({onClose, onNew}) => {
       </IonHeader>
 
       <IonContent fullscreen className={styles.container}>
-        {/* Показываем ошибку, если она есть */}
-        {error && (
-          <IonToast
-            isOpen={!!error}
-            message={error}
-            duration={3000}
-            color="danger"
-            onDidDismiss={() => {}}
-          />
-        )}
-
-        <UserStats 
-            displayName={displayName}
-            email={email}
-            phone={phone}
-            isPhotographer={false}
-            total={stats?.total || 0}
-            upcoming={stats?.upcoming || 0}
-            completed={stats?.completed || 0}
-            totalAmount={stats?.totalAmount || 0}
-            onCreateOrder={handleCreateOrder}
+        <UserStats
+          displayName={displayName}
+          email={email}
+          phone={phone}
+          isPhotographer={isPhotographer}
+          stats={stats}
+          onCreateOrder={handleCreateOrder}
         />
 
         <NextSessionCard
@@ -199,7 +165,6 @@ const UserDashboard: React.FC<DashProps> = ({onClose, onNew}) => {
 
         <ClientSessionsList
           loading={loading}
-          sessions={sessions}
           onRefresh={loadDashboardData}
           onOpenSession={handleOpenSession}
           onPaySession={handlePaySession}

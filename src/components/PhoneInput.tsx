@@ -14,10 +14,10 @@ interface PhoneInputProps {
   required?: boolean;
 }
 
-export const PhoneInput: React.FC<PhoneInputProps> = ({ 
-  placeholder, 
-  value, 
-  onChange, 
+export const PhoneInput: React.FC<PhoneInputProps> = ({
+  placeholder,
+  value,
+  onChange,
   onBlur,
   error,
   label,
@@ -26,11 +26,10 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
   const phoneMaskOptions: MaskitoOptions = {
     mask: ['+', '7', ' ', '(', /\d/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]
   };
-  
+
   const phoneMask = useMaskito({ options: phoneMaskOptions });
   const inputRef = useRef<HTMLIonInputElement>(null);
 
-  // Применяем маску когда компонент смонтирован
   useEffect(() => {
     const applyMask = async () => {
       if (inputRef.current) {
@@ -38,7 +37,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
         phoneMask(input);
       }
     };
-    
+
     applyMask();
   }, [phoneMask]);
 
@@ -52,7 +51,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
           </span>
         </div>
       )}
-      
+
       <div className={styles.inputWrapper}>
         <IonInput
           ref={inputRef}
@@ -65,7 +64,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
           type="tel"
         />
       </div>
-      
+
       {error && (
         <div className={styles.errorText}>
           {error}

@@ -2,7 +2,7 @@
 import React from 'react';
 import { IonButton, IonIcon } from '@ionic/react';
 import { arrowBackOutline, addCircleOutline, arrowForwardOutline } from 'ionicons/icons';
-import styles from './Styles.module.css';
+import styles from '../Styles.module.css';
 
 interface StepperHeaderProps {
   currentStep: 1 | 2 | 3;
@@ -25,7 +25,6 @@ const StepperHeader: React.FC<StepperHeaderProps> = ({
 
   return (
     <div className={styles.stepsHeader}>
-      {/* Левая кнопка назад */}
       <div className={styles.stepsLeft}>
         <IonButton
           type="button"
@@ -38,7 +37,6 @@ const StepperHeader: React.FC<StepperHeaderProps> = ({
         </IonButton>
       </div>
 
-      {/* Сам индикатор шагов по центру */}
       <div className={styles.stepsProgress}>
         <div
           className={`${styles.stepDot} ${
@@ -65,7 +63,6 @@ const StepperHeader: React.FC<StepperHeaderProps> = ({
         </div>
       </div>
 
-      {/* Правая кнопка: далее / сохранить */}
       <div className={styles.stepsRight}>
         {!isLastStep && (
           <IonButton

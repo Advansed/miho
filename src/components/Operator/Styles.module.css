@@ -1,0 +1,440 @@
+/* Operator — общие стили, часть повторяет User для консистентности */
+.container {
+  --background: transparent;
+  background: radial-gradient(circle at top, #0f172a 0, #020617 45%, #020617 100%);
+}
+
+.toolbar {
+  --background: rgba(15, 23, 42, 0.95);
+  --border-color: rgba(148, 163, 184, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+.toolbarTitle {
+  color: #e5e7eb;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.logoutButton {
+  --color: #94a3b8;
+  --background-hover: rgba(148, 163, 184, 0.1);
+}
+
+.summaryGrid {
+  max-width: 900px;
+  margin: 16px auto 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.summaryCard {
+  background: rgba(15, 23, 42, 0.9);
+  border-radius: 14px;
+  padding: 12px 14px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summaryCardButton {
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.summaryCardButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.summaryCardButton:active {
+  transform: translateY(0);
+}
+
+.summaryCardSelected {
+  border-color: rgba(167, 139, 250, 0.6);
+  box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.3);
+}
+
+.summaryLabel {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.summaryValue {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+.summaryDrafts {
+  background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.35), rgba(15, 23, 42, 0.95));
+}
+
+.summaryPlanned {
+  background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.35), rgba(15, 23, 42, 0.95));
+}
+
+.summaryInProgress {
+  background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.35), rgba(15, 23, 42, 0.95));
+}
+
+.summaryAwaitingPayment {
+  background: radial-gradient(circle at top left, rgba(251, 191, 36, 0.35), rgba(15, 23, 42, 0.95));
+}
+
+.summaryArchive {
+  background: radial-gradient(circle at top left, rgba(52, 211, 153, 0.35), rgba(15, 23, 42, 0.95));
+}
+
+.sessionsCardWrapper {
+  max-width: 900px;
+  margin: 0 auto 40px;
+}
+
+.sessionsCard {
+  background: rgba(30, 41, 59, 0.7);
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  overflow: hidden;
+}
+
+.sessionsHeader {
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sessionsTitle {
+  color: #e5e7eb;
+  font-size: 18px;
+  margin: 0 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sessionsTitleIcon {
+  color: #a78bfa;
+}
+
+.sessionsSubtitle {
+  color: #94a3b8;
+  font-size: 14px;
+  margin: 0;
+}
+
+.refreshButton {
+  --color: #94a3b8;
+  --padding-start: 8px;
+  --padding-end: 8px;
+}
+
+.sessionsListWrapper {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.list {
+  background: transparent;
+  padding: 0;
+}
+
+.sessionItem {
+  --background: transparent;
+  --border-color: transparent;
+  padding: 0;
+}
+
+.sessionItemInner {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.sessionAvatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid;
+}
+
+.sessionAvatarPlanned {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.sessionAvatarPending {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.2);
+}
+
+.sessionAvatarIconPlanned {
+  font-size: 24px;
+  color: #60a5fa;
+}
+
+.sessionAvatarIconPending {
+  font-size: 24px;
+  color: #fbbf24;
+}
+
+.sessionInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.sessionTitle {
+  color: #e5e7eb;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+
+.sessionMetaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.sessionMetaItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.sessionMetaIcon {
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+.sessionAmountItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #cbd5e1;
+  font-size: 13px;
+}
+
+.sessionAmountIcon {
+  font-size: 14px;
+  color: #34d399;
+}
+
+.sessionRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.sessionBadge {
+  font-size: 12px;
+}
+
+.sessionsEmpty {
+  padding: 40px 24px;
+  text-align: center;
+}
+
+.sessionsEmptyIconBox {
+  width: 80px;
+  height: 80px;
+  background: rgba(148, 163, 184, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.sessionsEmptyIcon {
+  font-size: 36px;
+  color: #64748b;
+}
+
+.sessionsEmptyTitle {
+  color: #e5e7eb;
+  font-size: 18px;
+  margin: 0 0 8px;
+}
+
+.sessionsEmptyText {
+  color: #94a3b8;
+  font-size: 14px;
+  margin: 0;
+}
+
+.sessionItemSkeletonInner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+}
+
+.sessionAvatarSkeleton {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+}
+
+.sessionInfoSkeleton {
+  flex: 1;
+}
+
+.sessionTitleSkeleton {
+  height: 18px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.sessionMetaSkeletonRow {
+  display: flex;
+  gap: 12px;
+}
+
+.sessionMetaSkeleton {
+  width: 80px;
+  height: 14px;
+  border-radius: 4px;
+}
+
+.sessionBadgeSkeleton {
+  width: 70px;
+  height: 24px;
+  border-radius: 8px;
+}
+
+/* EditRequest form */
+.pageContent {
+  --background: radial-gradient(circle at top, #0f172a 0, #020617 45%, #020617 100%);
+}
+
+.pageContainer {
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.pageCard {
+  background: rgba(15, 23, 42, 0.95);
+  border-radius: 24px;
+  padding: 32px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.9);
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.pageCardCompact {
+  padding: 20px;
+  max-width: 520px;
+}
+
+.formCardWithGrid {
+  max-width: 720px;
+}
+
+.formSectionsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.formSectionsGrid > * {
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+@media (max-width: 560px) {
+  .formSectionsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.formSectionCompact {
+  background: rgba(30, 41, 59, 0.5);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.08);
+}
+
+.sectionTitleCompact {
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sectionIcon {
+  color: #60a5fa;
+  font-size: 16px;
+}
+
+.formItemCompact {
+  --background: transparent;
+  --border-color: rgba(148, 163, 184, 0.2);
+  --color: white;
+  --min-height: 44px;
+  margin-bottom: 8px;
+}
+
+.sessionTypeLabel {
+  display: block;
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.sessionTypeList {
+  margin-top: 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  overflow: hidden;
+  width: 100%;
+}
+
+.sessionTypeItem {
+  --background: rgba(30, 41, 59, 0.8);
+  --color: #e5e7eb;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --min-height: 52px;
+  width: 100%;
+}
+
+.sessionTypeItemSelected {
+  --background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.5);
+  border-radius: 8px;
+  margin: 2px 0;
+}
+
+.editSessionButton {
+  margin-bottom: 10px;
+}
+.editSessionButton:last-child {
+  margin-bottom: 0;
+}

@@ -14,35 +14,23 @@ import {
   locationOutline,
   cashOutline
 } from 'ionicons/icons';
-import styles from './Styles.module.css';
-
-export type SessionStatus = 'planned' | 'pending_payment' | 'finished';
-
-export interface UserSession {
-  id: number;
-  date: string;
-  type: string;
-  locationHint?: string;
-  status: SessionStatus;
-  isPaid: boolean;
-  amount: number;
-}
+import styles from '../Styles.module.css';
+import type { Session, SessionType } from '../../Store/sessionStore';
+import { useUserStore } from '../../Store/sessionStore';
 
 export interface ClientSessionsListProps {
   loading: boolean;
-  sessions: UserSession[];
   onRefresh: () => void;
-  onOpenSession: (id: number) => void;
-  onPaySession: (id: number) => void;
+  onOpenSession: (session:Session) => void;
+  onPaySession: (id: string) => void;
   onCreateOrder: () => void;
   formatShortDate: (dateStr: string) => string;
-  getStatusLabel: (session: UserSession) => string;
-  getStatusColor: (session: UserSession) => string;
+  getStatusLabel: (session: Session) => string;
+  getStatusColor: (session: Session) => string;
 }
 
 const ClientSessionsList: React.FC<ClientSessionsListProps> = ({
   loading,
-  sessions,
   onRefresh,
   onOpenSession,
   onPaySession,
@@ -51,6 +39,14 @@ const ClientSessionsList: React.FC<ClientSessionsListProps> = ({
   getStatusLabel,
   getStatusColor
 }) => {
+  const sessions = useUserStore((s) => s.sessions);
+  const session_types = useUserStore((s) => s.session_types);
+
+  const getSessionTypeName = (session: Session): string => {
+    const t = session.type;
+    return session_types.find((st) => st.id === t)?.name ?? ''
+  };
+
   return (
     <div className={styles.sessionsCardWrapper}>
       <div className={styles.sessionsCard}>
@@ -99,13 +95,13 @@ const ClientSessionsList: React.FC<ClientSessionsListProps> = ({
                   button
                   className={styles.sessionItem}
                   lines="none"
-                  onClick={() => onOpenSession(session.id)}
+                  onClick={() => onOpenSession( session )}
                 >
                   <div className={styles.sessionItemInner}>
                     <div
                       className={[
                         styles.sessionAvatar,
-                        session.status === 'finished'
+                        session.status === 'completed'
                           ? styles.sessionAvatarFinished
                           : session.status === 'planned'
                           ? styles.sessionAvatarPlanned
@@ -115,7 +111,7 @@ const ClientSessionsList: React.FC<ClientSessionsListProps> = ({
                       <IonIcon
                         icon={cameraOutline}
                         className={
-                          session.status === 'finished'
+                          session.status === 'completed'
                             ? styles.sessionAvatarIconFinished
                             : session.status === 'planned'
                             ? styles.sessionAvatarIconPlanned
@@ -125,22 +121,22 @@ const ClientSessionsList: React.FC<ClientSessionsListProps> = ({
                     </div>
 
                     <div className={styles.sessionInfo}>
-                      <h3 className={styles.sessionTitle}>{session.type}</h3>
+                      <h3 className={styles.sessionTitle}>{getSessionTypeName(session)}</h3>
                       <div className={styles.sessionMetaRow}>
                         <span className={styles.sessionMetaItem}>
                           <IonIcon
                             icon={calendarOutline}
                             className={styles.sessionMetaIcon}
                           />
-                          {formatShortDate(session.date)}
+                          { session.date + ':' + session.time }
                         </span>
-                        {session.locationHint && (
+                        {session.location && (
                           <span className={styles.sessionMetaItem}>
                             <IonIcon
                               icon={locationOutline}
                               className={styles.sessionMetaIcon}
                             />
-                            {session.locationHint}
+                            {session.location }
                           </span>
                         )}
                         <span className={styles.sessionAmountItem}>
@@ -160,14 +156,14 @@ const ClientSessionsList: React.FC<ClientSessionsListProps> = ({
                       >
                         {getStatusLabel(session)}
                       </IonBadge>
-                      {!session.isPaid && session.status !== 'finished' && (
+                      {!session.isPaid && session.status !== 'completed' && (
                         <IonButton
                           size="small"
                           fill="clear"
                           className={styles.sessionPayButton}
                           onClick={(e) => {
                             e.stopPropagation();
-                            onPaySession(session.id);
+                            console.log( "pay" )
                           }}
                         >
                           Оплатить

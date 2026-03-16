@@ -1,7 +1,35 @@
 import { useState } from 'react';
 import { post, ApiResponse } from '../api';
-import { useLoginStore, useToken } from './LoginStore';
+import { useAuth, useLoginStore, useToken } from './LoginStore';
 import { useToast } from '../Toast';
+
+const STORAGE_KEY_PHONE = 'login_phone';
+const STORAGE_KEY_PASSWORD = 'login_password';
+
+function getStoredPhone(): string {
+  try {
+    return localStorage.getItem(STORAGE_KEY_PHONE) ?? '';
+  } catch {
+    return '';
+  }
+}
+
+function getStoredPassword(): string {
+  try {
+    return localStorage.getItem(STORAGE_KEY_PASSWORD) ?? '';
+  } catch {
+    return '';
+  }
+}
+
+function setStoredCredentials(phone: string, password: string): void {
+  try {
+    localStorage.setItem(STORAGE_KEY_PHONE, phone);
+    localStorage.setItem(STORAGE_KEY_PASSWORD, password);
+  } catch {
+    // ignore
+  }
+}
 
 export type LoginMode = 'authorization' | 'registration' | 'restore';
 
@@ -75,17 +103,19 @@ export const useLogin = (initialMode: LoginMode = 'authorization') => {
 
   const { token, setToken } = useToken();
 
-  // В начальное состояние:
-  const [state, setState] = useState<LoginState>({
+  const { auth, setAuth } = useAuth()
+
+  // Начальное состояние: подставляем сохранённые логин и пароль
+  const [state, setState] = useState<LoginState>(() => ({
     mode: initialMode,
-    phone: '',
-    password: '',
+    phone: getStoredPhone(),
+    password: getStoredPassword(),
     confirmPassword: '',
     pincode: '',
     name: '',
     email: '',
     registrationStep: 'phone'
-  });
+  }));
 
   const setMode = (mode: LoginMode) =>
     setState((prev) => ({
@@ -174,6 +204,9 @@ export const useLogin = (initialMode: LoginMode = 'authorization') => {
       setToken(response.token);
       setStoreMode('login');
 
+      setAuth( true );
+
+      setStoredCredentials(phone, password);
       toast.success('Успешная авторизация!');
       return response;
     } catch (error) {
